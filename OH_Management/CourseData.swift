@@ -11,5 +11,6 @@ import UIKit
 class CourseData: NSObject {
     var image : UIImage?
     var title : String?
+    var location: String?
     var avergeTimePerStudent: Int?
 }

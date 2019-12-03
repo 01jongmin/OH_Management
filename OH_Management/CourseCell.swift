@@ -11,79 +11,131 @@ import UIKit
 
 class CourseCell : UICollectionViewCell {
     
-    private var videoImageView = UIImageView()
-    private var videoTitleLabel = UILabel()
+    private var courseImageView = UIImageView()
+    private var courseTitleLabel = UILabel()
+    private var courseLocationLabel = UILabel()
+    
+    let containerView = UIView()
+    let subViewImageAndTitle = UIView()
+    let subViewDescription = UIView()
+    
+    let cornerRadius: CGFloat = 10.0
+    let xSpacing: CGFloat = 20
+    let ySpacing: CGFloat = 10
+    
+    func set(course: CourseData) {
+        courseImageView.image = course.image
+        courseTitleLabel.text = course.title
+    }
     
     override init (frame: CGRect){
         super.init(frame: frame)
-        print("init")
         backgroundColor = .clear
         
-        addSubview(videoImageView)
-        addSubview(videoTitleLabel)
-
-        configureImageView()
-        configureTitleLabel()
-        setImageConstraints()
-        setTitleLabelConstraint()
+        addSubview(containerView)
+        configureContainerView()
+        configureSubViewImageAndTitle()
     }
     
-    var first = {
-        test = UIView()
-    
-        return test
-    }()
-    
-    func set(course: CourseData){
-        videoImageView.image = course.image
-        videoTitleLabel.text = course.title
-    }
-    
-    func configureImageView(){
-        videoImageView.layer.cornerRadius = 10
-        videoImageView.clipsToBounds      = true
-        videoImageView.contentMode = .scaleAspectFit
-    }
-    
-    func configureTitleLabel(){
-        videoTitleLabel.numberOfLines             = 0
-        videoTitleLabel.adjustsFontSizeToFitWidth = true
-    }
-    
-    func setImageConstraints(){
-        videoImageView.translatesAutoresizingMaskIntoConstraints = false
-        videoImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive                                  = true
-        videoImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: super.bounds.width/20).isActive = true
-        let x = videoImageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.90)
-            x.priority = .defaultHigh
-        x.isActive = true
-        videoImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 4/5).isActive = true
-    }
-    
-    func setTitleLabelConstraint(){
-        videoTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        videoTitleLabel.adjustsFontForContentSizeCategory                                                         = false
-        videoTitleLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive                                 = true
-        videoTitleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: bounds.width/10).isActive = true
-        videoTitleLabel.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.90).isActive           = true
-        videoTitleLabel.widthAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-    }
-    
-    override func draw(_ rect: CGRect) {
-        let xSpacing = 20
-        let ySpacing = 10
-        let frame = UIBezierPath(roundedRect: rect.insetBy(dx: CGFloat(xSpacing), dy: CGFloat(ySpacing)), cornerRadius: 10)
-        frame.addClip()
-        UIColor.white.setFill()
-        frame.fill()
+    func configureContainerView() {
+        // set the shadow of the view's layer
+        layer.backgroundColor = UIColor.clear.cgColor
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 1.0)
+        layer.shadowOpacity = 0.5
+        layer.shadowRadius = 4.0
+          
+        // set the cornerRadius of the containerView's layer
+        containerView.layer.cornerRadius = cornerRadius
+        containerView.layer.masksToBounds = true
+        containerView.clipsToBounds = true
+        containerView.backgroundColor = .white
         
-        self.layer.shadowOffset = .zero
-        self.layer.shadowRadius = 3
-        self.layer.shadowOpacity = 0.5
-        let shadowPath = UIBezierPath(roundedRect: rect.insetBy(dx: CGFloat(xSpacing), dy: CGFloat(ySpacing)), cornerRadius: 10)
-        self.layer.shadowPath = shadowPath.cgPath
+        containerView.layer.shadowOffset = .zero
+        containerView.layer.shadowRadius = 3
+        containerView.layer.shadowOpacity = 0.5
+        let shadowPath = UIBezierPath(roundedRect: bounds.insetBy(dx: CGFloat(xSpacing), dy: CGFloat(ySpacing)), cornerRadius: 10)
+        containerView.layer.shadowPath = shadowPath.cgPath
+
+        // add constraints
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+
+        // pin the containerView to the edges to the view
+        containerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: xSpacing).isActive = true
+        containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -xSpacing).isActive = true
+        containerView.topAnchor.constraint(equalTo: topAnchor, constant: ySpacing).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -ySpacing).isActive = true
     }
     
+    func configureSubViewImageAndTitle() {
+        containerView.addSubview(subViewImageAndTitle)
+        subViewImageAndTitle.translatesAutoresizingMaskIntoConstraints = false
+        
+        subViewImageAndTitle.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 4/10).isActive = true
+        subViewImageAndTitle.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
+        subViewImageAndTitle.clipsToBounds = true
+        subViewImageAndTitle.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        
+        configureCourseImageView()
+        setCourseImageViewConstraints()
+        configureCourseTitleLabel()
+        setCourseTitleLabelConstraint()
+    }
+    
+    func configureCourseImageView(){
+        courseImageView.layer.cornerRadius = 10
+        courseImageView.clipsToBounds      = true
+        courseImageView.contentMode        = .scaleAspectFit
+        subViewImageAndTitle.addSubview(courseImageView)
+    }
+    
+    func setCourseImageViewConstraints(){
+        courseImageView.translatesAutoresizingMaskIntoConstraints = false
+        courseImageView.centerXAnchor.constraint(equalTo: subViewImageAndTitle.centerXAnchor).isActive = true
+        courseImageView.heightAnchor.constraint(equalTo: subViewImageAndTitle.heightAnchor, multiplier: 0.50).isActive = true
+        courseImageView.widthAnchor.constraint(equalTo: subViewImageAndTitle.widthAnchor, multiplier: 4/5).isActive = true
+        courseImageView.topAnchor.constraint(equalTo: subViewImageAndTitle.topAnchor, constant: xSpacing).isActive = true
+    }
+    
+    func configureCourseTitleLabel() {
+        courseTitleLabel.numberOfLines = 0
+        courseTitleLabel.adjustsFontSizeToFitWidth = true
+        subViewImageAndTitle.addSubview(courseTitleLabel)
+    }
+    
+    func setCourseTitleLabelConstraint(){
+       courseTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+       courseTitleLabel.adjustsFontForContentSizeCategory = false
+        
+//        courseTitleLabel.centerYAnchor.constraint(equalTo: subViewImageAndTitle.centerYAnchor, constant: 0).isActive = true
+    
+        courseTitleLabel.topAnchor.constraint(equalTo: courseImageView.bottomAnchor).isActive = true
+        courseTitleLabel.centerXAnchor.constraint(equalTo: subViewImageAndTitle.centerXAnchor).isActive = true
+        
+//        courseTitleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+//       courseTitleLabel.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        
+//        courseTitleLabel.topAnchor.constraint(equalTo: courseImageView.bottomAnchor, constant: 50).isActive = true
+    
+    
+       }
+    
+
+
+//    func configuresSubViewDescription() {
+//        secondHalf.backgroundColor = .blue
+//        subViewDescription.widthAnchor.constraint(equalTo: super.widthAnchor, multiplier: 6/10).isActive = true
+//        subViewDescription.heightAnchor.constraint(equalTo: super.heightAnchor).isActive = true
+//        subViewDescription.clipsToBounds = true
+//        subViewDescription.translatesAutoresizingMaskIntoConstraints = false
+//        subViewDescription.trailingAnchor.constraint(equalTo: super.trailingAnchor).isActive = true
+//    }
+
+//    func configureTitleLabel(){
+//        videoTitleLabel.numberOfLines             = 0
+//        videoTitleLabel.adjustsFontSizeToFitWidth = true
+//    }
+  
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

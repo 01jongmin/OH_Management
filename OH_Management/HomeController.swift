@@ -12,8 +12,9 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
     var courses: [CourseData] = {
         var blankCourse = CourseData()
-        blankCourse.title = "Test"
+        blankCourse.title = "CIS 120"
         blankCourse.image = Images.CIS120
+        blankCourse.location
         return [blankCourse]
     }()
     
