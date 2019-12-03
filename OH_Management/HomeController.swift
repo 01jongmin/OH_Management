@@ -11,11 +11,21 @@ import UIKit
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
     var courses: [CourseData] = {
-        var blankCourse = CourseData()
-        blankCourse.title = "CIS 120"
-        blankCourse.image = Images.CIS120
-        blankCourse.location
-        return [blankCourse]
+        var course1 = CourseData()
+        course1.title = "CIS 120"
+        course1.image = Images.CIS120
+        course1.location = "Towne 211"
+        course1.avergeTimePerStudent = 5
+        course1.numberOfStudentsInQueue = 20
+        
+        var course2 = CourseData()
+        course2.title = "CIS 160"
+        course2.image = Images.CIS160
+        course2.location = "Skir 114"
+        course2.avergeTimePerStudent = 10
+        course2.numberOfStudentsInQueue = 14
+        
+        return [course1, course2]
     }()
     
     override func viewDidLoad() {

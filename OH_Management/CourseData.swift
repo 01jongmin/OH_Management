@@ -13,4 +13,5 @@ class CourseData: NSObject {
     var title : String?
     var location: String?
     var avergeTimePerStudent: Int?
+    var numberOfStudentsInQueue: Int?
 }

@@ -9,5 +9,6 @@
 import UIKit
 
 struct Images {
-    static let CIS120 = UIImage(named: "OCaml_Sticker")!
+    static let CIS120 = UIImage(named: "CIS120")!
+    static let CIS160 = UIImage(named: "CIS160")!
 }
